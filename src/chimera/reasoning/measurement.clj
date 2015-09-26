@@ -54,3 +54,7 @@
                       (PUT* "/" [] :return Measurement :body [measurement Measurement] (ok (update-measurement! measurement)))
                       (GET* "/:id" [] :return Measurement :path-params [id :- Long] (ok (get-measurement id)))
                       (DELETE* "/:id" [] :path-params [id :- Long] (ok (delete-measurement! id)))))
+(defn first-element [sequence default]
+      (if (nil? sequence)
+        default
+        (first sequence)))

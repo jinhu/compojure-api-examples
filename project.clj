@@ -1,6 +1,7 @@
 (defproject jinhu/chimera-reasoning "0.1.0"
-  :description "chimera.reasoning"
+  :description "chimera.reasoning more than spike"
   :dependencies [[org.clojure/clojure "1.7.0"]
+                 [lein-midje "3.1.3"]
                  [clj-time "0.11.0"] ;; needed as `lein ring uberwar` is broken.
                  [metosin/compojure-api "0.23.0"]]
   :ring {:handler chimera.reasoning.handler/app}
