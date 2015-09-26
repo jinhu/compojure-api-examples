@@ -2,16 +2,10 @@
     (:require [schema.core :as s]
       [compojure.api.sweet :refer :all]
       [ring.util.http-response :refer :all]
-      ;[compojure.core :refer :all]
-      ;[compojure.api.core :refer :all]
-      ;[ring.util.http-response :refer :all]
       [ring.swagger.schema :refer [coerce!]]
       )
     )
 
-;; Domain
-
-(def Topping (s/enum :cheese :olives :ham :pepperoni :habanero))
 
 (s/defschema Measurement {:id        Long
                           :timestamp Long
@@ -22,7 +16,7 @@
 (s/defschema NewMeasurement (dissoc Measurement :id))
 
 
-(defonce id-seq (atom 0))
+(defonce measureement-id-seq (atom 0))
 (defonce measurements (atom (array-map)))
 
 (defn get-measurement [id] (@measurements id))
@@ -30,7 +24,7 @@
 (defn delete-measurement! [id] (swap! measurements dissoc id) nil)
 
 (defn create-measurement! [new-measurement]
-      (let [id (swap! id-seq inc)
+  (let [id (swap! measureement-id-seq inc)
             measurement (coerce! Measurement (assoc new-measurement :id id))]
            (swap! measurements assoc id measurement)
            measurement))
