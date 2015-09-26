@@ -1,9 +1,9 @@
-(defproject metosin/compojure-api-examples "0.23.0"
-  :description "Compojure-api-examples"
+(defproject jinhu/chimera-reasoning "0.1.0"
+  :description "chimera.reasoning"
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [clj-time "0.11.0"] ;; needed as `lein ring uberwar` is broken.
                  [metosin/compojure-api "0.23.0"]]
-  :ring {:handler compojure.api.examples.handler/app}
+  :ring {:handler chimera.reasoning.handler/app}
   :uberjar-name "examples.jar"
   :uberwar-name "examples.war"
   :profiles {:uberjar {:resource-paths ["swagger-ui"]
