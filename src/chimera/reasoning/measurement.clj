@@ -16,7 +16,7 @@
 (s/defschema NewMeasurement (dissoc Measurement :id))
 
 
-(defonce measureement-id-seq (atom 0))
+(defonce measurement-id-seq (atom 0))
 (defonce measurements (atom (array-map)))
 
 (defn get-measurement [id] (@measurements id))
@@ -24,7 +24,7 @@
 (defn delete-measurement! [id] (swap! measurements dissoc id) nil)
 
 (defn create-measurement! [new-measurement]
-  (let [id (swap! measureement-id-seq inc)
+  (let [id (swap! measurement-id-seq inc)
             measurement (coerce! Measurement (assoc new-measurement :id id))]
            (swap! measurements assoc id measurement)
            measurement))
@@ -32,7 +32,7 @@
 (defn update-measurement! [measurement]
       (let [measurement (coerce! Measurement measurement)]
            (swap! measurements assoc (:id measurement) measurement)
-           (get (:id measurement))))
+           (get-measurement (:id measurement))))
 
 ;; Data
 
@@ -48,7 +48,7 @@
                       (PUT* "/" [] :return Measurement :body [measurement Measurement] (ok (update-measurement! measurement)))
                       (GET* "/:id" [] :return Measurement :path-params [id :- Long] (ok (get-measurement id)))
                       (DELETE* "/:id" [] :path-params [id :- Long] (ok (delete-measurement! id)))))
-(defn first-element [sequence default]
+(defn first-measurement [sequence default]
       (if (nil? sequence)
         default
         (first sequence)))

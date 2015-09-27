@@ -3,6 +3,8 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [lein-midje "3.1.3"]
                  [clj-time "0.11.0"]                        ;; needed as `lein ring uberwar` is broken.
+                 [org.clojure/core.cache "0.6.3"]
+                 [org.clojure/core.memoize "0.5.6" :exclusions [org.clojure/core.cache]]
                  [com.cemerick/friend "0.2.0" :exclusions [ring/ring-core]]
                  [friend-oauth2 "0.1.1" :exclusions [org.apache.httpcomponents/httpcore]]
                  [cheshire "5.2.0"]
