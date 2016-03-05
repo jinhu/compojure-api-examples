@@ -8,7 +8,10 @@
                  [com.cemerick/friend "0.2.0" :exclusions [ring/ring-core]]
                  [friend-oauth2 "0.1.1" :exclusions [org.apache.httpcomponents/httpcore]]
                  [cheshire "5.2.0"]
-                 [metosin/compojure-api "0.23.0"]]
+                 [metosin/compojure-api "0.23.0"]
+
+                 ]
+
   :ring {:handler chimera.reasoning.handler/app}
   :uberjar-name "examples.jar"
   :uberwar-name "examples.war"

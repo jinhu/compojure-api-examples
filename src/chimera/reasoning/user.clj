@@ -48,24 +48,6 @@
 ;(defroutes* user-routes
 ;            (context* "/users" []
 ;                      :tags ["user"]
-;                      (GET* "/" [] :return [User] (ok (list-users)))
-;                      (POST* "/" [] :return User :body [user NewUser] (ok (create-user! user)))
-;                      (PUT* "/" [] :return User :body [user User] (ok (update-user! user)))
-;                      (GET* "/:id" [] :return User :path-params [id :- Long] (ok (get-user id)))
-;                      (DELETE* "/:id" [] :path-params [id :- Long] (ok (delete-user! id)))))
-;(ns chimera.reasoning.user
-;  (:require [schema.core :as s]
-;            [compojure.api.sweet :refer :all]
-;            [ring.util.http-response :refer :all]
-;            [ring.swagger.schema :refer [coerce!]]
-;            [compojure.api.sweet :refer [defroutes] ]
-;             [compojure.core :refer :all]
-;            [friend-oauth2.workflow :as oauth2]
-;            [friend-oauth2.util :refer [format-config-uri]]
-;            [cheshire.core :as j]
-;            (cemerick.friend [workflows :as workflows]
-;                             [credentials :as creds])))
-;
 (defn credential-fn
   [token]
   ;;lookup token in DB or whatever to fetch appropriate :roles
@@ -95,7 +77,6 @@
                 (context*
                   "/user" []
                   :tags ["user"]
-                  (GET* "/" request "open.")
                   (GET* "/status" request
                         (let [count (:count (:session request) 0)
                               session (assoc (:session request) :count (inc count))]
@@ -104,20 +85,25 @@
                                      " times.</p><p>The current session: " session "</p>"))
                               (assoc :session session))))
                   (GET* "/authlink" request
-                        (friend/authorize #{::user} "Authorized page."))
+                        (friend/authorize #{::user} (ok (list-users))))
                   (GET* "/authlink2" request
                         (friend/authorize #{::user} "Authorized page 2."))
                   (GET* "/admin" request
                         (friend/authorize #{::admin} "Only admins can see this page."))
-                  (friend/logout (ANY* "/logout" request (ring.util.response/redirect "/"))))
-                {:allow-anon? true
-                 :workflows   [(oauth2/workflow
-                                 {:client-config client-config
-                                  :uri-config    uri-config
-                                  :credential-fn credential-fn})]}))
+                  (GET* "/" [] :return [User] (ok (list-users)))
+                  (POST* "/" [] :return User :body [user NewUser] (ok (create-user! user)))
+                  (PUT* "/" [] :return User :body [user User] (ok (update-user! user)))
+                  (GET* "/:id" [] :return User :path-params [id :- Long] (ok (get-user id)))
+                  (DELETE* "/:id" [] :path-params [id :- Long] (ok (delete-user! id)))
+              (friend/logout (ANY* "/logout" request (ring.util.response/redirect "/"))))
+            {:allow-anon? true
+             :workflows   [(oauth2/workflow
+                             {:client-config client-config
+                              :uri-config    uri-config
+                              :credential-fn credential-fn})]}) )
 
 
-            )
+)
 
 ;;(def app
 ;;  (handler/site
